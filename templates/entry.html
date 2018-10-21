@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <hr />
+
+    <form action='/newpost' method='POST'>
+        <div>
+            <label for="blogtitle">New Blog Title:</label>
+            {{blogs.title}}
+            <input type="text" name="blogtitle" id="blogtitle" required />
+            <br>
+            <br>
+            <label for="blogtext">Blog Text: &emsp;</label>
+            {{blogs.text_blog}}
+            <textarea name="blogtext" rows="10" cols="30" value="" required></textarea>
+           
+            <input type="submit" value='Add Blog' />
+        </div>
+        
+    </form>
+
+
+    <hr />
+
+
+{% endblock %}

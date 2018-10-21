@@ -1,4 +1,5 @@
-from flask import Flask, request, redirect, render_template
+
+from flask import Flask, request, redirect, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -8,43 +9,56 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 
-class Task(db.Model):
+class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    completed = db.Column(db.Boolean)
+    title = db.Column(db.String(120))
+    text_blog = db.Column(db.String(500))
 
-    def __init__(self, name):
-        self.name = name
-        self.completed = False
+    def __init__(self, title, text_blog):
+        self.title = title
+        self.text_blog = text_blog
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/')
 def index():
+  blogs = Blog.query.all()
+  return render_template('index.html',title="Build-a-Blog", blogs=blogs )
 
-    if request.method == 'POST':
-        task_name = request.form['task']
-        new_task = Task(task_name)
-        db.session.add(new_task)
+    
+@app.route('/newpost', methods=['POST', 'GET'])
+def entry():
+    
+    if request.method == "POST":
+        blog_name = request.form['blogtitle']
+        text_blog = request.form['blogtext']
+        new_blog = Blog(blog_name, text_blog)
+        db.session.add(new_blog)
         db.session.commit()
+        blogid = Blog.query.filter_by(title=blog_name).first()
+        newblogid = blogid.id
+        return redirect(url_for('blog', blog_id = newblogid))
+    else:
+        blogs = Blog.query.all()
+        return render_template('entry.html',title="Build-a-Blog", blogs=blogs)    
 
-    tasks = Task.query.filter_by(completed=False).all()
-    completed_tasks = Task.query.filter_by(completed=True).all()
-    return render_template('todos.html',title="Build-a-blog", 
-        tasks=tasks, completed_tasks=completed_tasks)
+@app.route('/blog/<int:blog_id>')
+def blog(blog_id):
+    if blog_id == None:
+        return render_template('index.html',title="Build-a-Blog", blog=blog )
+    else:
+        blog = Blog.query.get(blog_id)
+        return render_template('blogs.html',title="Build-a-Blog", blog=blog)
 
 
-@app.route('/delete-task', methods=['POST'])
-def delete_task():
-
-    task_id = int(request.form['task-id'])
-    task = Task.query.get(task_id)
-    task.completed = True
-    db.session.add(task)
+@app.route('/delete-blog', methods=['POST'])
+def delete_blog():
+    blog_id = (request.form['blog-id'])
+    blog = Blog.query.get(blog_id)
+    db.session.delete(blog)
     db.session.commit()
-
     return redirect('/')
-
+  
 
 if __name__ == '__main__':
     app.run()
