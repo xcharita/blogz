@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+ 
+        <ul>
+
+                {% for blog in blogs%}
+            
+                       
+                    <strong><a name="blog-id" href="{{ url_for('list_blogs', blog_id=blog.id)}}"> {{blog.title}} </a></strong>       
+                    
+                    <br>
+                    <br>
+                    {{blog.text_blog}}
+                    <br>
+                    {% for user in users %}
+                        {% if blog.owner_id == user.id %}
+                            {% set username = user.username %}
+                            <sub>
+                                written by <a name="user-id" href="{{ url_for('user_blogs', user_id=user.id)}}">{{username}}</a><br>
+                            </sub>
+                        {% endif %}
+                    {% endfor %}
+                <hr>
+
+                {% endfor %}
+
+        </ul>
+ 
+
+{% endblock %}
