@@ -1,22 +1,30 @@
 {% extends "base.html" %}
 
-{% block content %}      
+{% block content %}
+    {% if blogs|length == 0 %}
+    <p>No blogs yet</p>
+    {% else %}
+            {% for blog in blogs %}       
+                    <br>
+
+                            <a align=center name = blog_id href="{{ url_for('list_blogs', blog_id=blog.id)}}" id={{blog.id}}>
+                                    <font size="4">
+                                        <strong>{{blog.title}} </strong>
+                                    </font>
+                            </a>
 
 
-        
-                <p align=center>
-                    <font size="6">
-                        <br>
-                        <br>
-                        <strong>{{blog.title}} </strong>
-                    </font>
-                </p>
-                <br>
-                <br>
-                <p align=center>
-                    <font size="3">
-                        {{blog.text_blog}} 
-                    </font>
-                </p>
+                    <br>
+                    <a align=center>
+                        <font size="3">
+                            {{blog.text_blog}} 
+                        </font>
+                    </a>
+                    <br>
+                    <hr>
+
+            {% endfor %}
+    
+    {% endif %}
    
 {% endblock %}

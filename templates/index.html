@@ -2,29 +2,17 @@
 
 {% block content %}
 
-
-    {% if blogs|length == 0 %}
-    <p>No blogs yet</p>
+    {% if users|length == 0 %}
+    <p>No bloggers yet</p>
     {% else %}
- 
-        <ul>
-            {% for blog in blogs %}
-            
-            <form action ="/blog/<int:blog-id>"style="display:inline-block;">   
-                <strong><a name="blog-id" href=/blog/{{blog.id}}> {{blog.title}} </a></strong> 
-                      
-            </form>
-            
-            <br>
-            <br>
-            {{blog.text_blog}} 
-
-                <form method='POST' action ="/delete-blog" style="display:inline-block;">
-                    <input type="hidden" name="blog-id" value={{blog.id}}/>
-                    <input type="submit" value="Delete Blog"/>
-                </form>
-            <br>
-            <hr>
+            {% for user in users %}
+            <ul>
+                  <a name=user-id href="{{ url_for('user_blogs', user_id=user.id)}}" id={{user.id}}>
+                        <li> 
+                            {{user.username}}
+                        </li>
+                    </a>
+            </ul>              
             {% endfor %}
         </ul>
 

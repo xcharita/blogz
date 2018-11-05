@@ -3,16 +3,20 @@
     <head>
         <title>{{title}}</title>
     </head>
+    <style type="text/css">
+        .error {color:red;}
+    </style>
 <body>
 
     <div><a href='/' >Home</a>&emsp14;&emsp14;
-        <a href='/allpost'>all posts (with text)</a>&emsp14;&emsp14;
+        <a href='/userspost'>all users posts (with text)</a>&emsp14;&emsp14;
         <a href='/newpost'>new post</a>&emsp14;&emsp14;
         <a href='/login'>login</a>&emsp14;&emsp14;
         <a href='/logout'>logout</a>&emsp14;&emsp14;
     </div>
 
     {% block content %}
+
     {% endblock %}
 
 </body>

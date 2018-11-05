@@ -1,22 +1,29 @@
 {% extends "base.html" %}
 
-{% block content %}      
+{% block content %}
+ 
+        <ul>
 
+                {% for blog in blogs%}
+            
+                    <form action ="/blog/<int:blog-id>"style="display:inline-block;">   
+                        <strong><a name="blog-id" href=/blog/{{blog.owner_id}}> {{blog.title}} </a></strong> 
+                            
+                    </form>
+                    <br>
+                    {{blog.text_blog}}
+                    <br>
+                    <form action ="/blog/<int:user-id>"style="display:inline-block;">   
+                        <p>
+                            <sub>written by <a name="user-id" href=/blog/{{blog.owner_id}}>{{blog.owner_id}}</a><br>
+                            </sub>
+                        </p>
+                    </form>
+                    <hr>
 
-        
-                <p align=center>
-                    <font size="6">
-                        <br>
-                        <br>
-                        <strong>{{blog.title}} </strong>
-                    </font>
-                </p>
-                <br>
-                <br>
-                <p align=center>
-                    <font size="3">
-                        {{blog.text_blog}} 
-                    </font>
-                </p>
-   
+                {% endfor %}
+
+        </ul>
+ 
+
 {% endblock %}
